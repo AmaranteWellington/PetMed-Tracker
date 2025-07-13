@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import PetForm from './PetForm';
 
 function App() {
+  const [pets, setPets] = useState([]);
+  //Carregar pets no LocalStorage na inicialização
+  useEffect(() => {
+    const dadosSalvos = localStorage.getItem('pets');
+    if (dadosSalvos) {
+      setPets(JSON.parse(dadosSalvos));
+    }
+  }, []);
+  //Salvar pets no LocalStorage sempre que mudar
+  useEffect(() => {
+    localStorage.setItem('pets', JSON.stringify(pets));
+  }, [pets]);
+  const adicionarPet = (novoPet) => {
+    const novaLista = [...pets, novoPet];
+    setPets(novaLista);
+    localStorage.setItem('pets', JSON.stringify(novaLista));
+  };
+  const excluirPet = (id) => {
+    const novaLista = pets.filter((pet) => pet.id !== id);
+    setPets(novaLista);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>PetMed Tracker</h1>
+      <PetForm onAddPet={adicionarPet} />
+      <h2>Animais Cadastrados:</h2>
+      <ul>
+        {pets.map((pet) => (
+          <li key={pet.id}>
+            {pet.nome} ({pet.especie}){''}
+            <button onClick={() => excluirPet(pet.id)}>Excluir</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
