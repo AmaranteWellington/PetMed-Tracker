@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PetForm from './PetForm';
+import RemedioForm from './RemedioForm';
 
 function App() {
   const [pets, setPets] = useState(() => {
@@ -17,6 +18,21 @@ function App() {
     setPets(novaLista);
     localStorage.setItem('pets', JSON.stringify(novaLista));
   };
+
+  const adicionarRemedioAoPet = (petId, novoRemedio) => {
+    const novaLista = pets.map((pet) => {
+      if (pet.id === petId) {
+        return {
+          ...pet,
+          remedios: [...pet.remedios, novoRemedio],
+        };
+      } else {
+        return pet;
+      }
+    });
+    setPets(novaLista);
+    localStorage.setItem('pets', JSON.stringify(novaLista));
+  };
   return (
     <div>
       <h1>PetMed Tracker</h1>
@@ -25,8 +41,20 @@ function App() {
       <ul>
         {pets.map((pet) => (
           <li key={pet.id}>
-            {pet.nome} ({pet.especie}){''}
+            <strong>{pet.nome}</strong> ({pet.especie}){''}
             <button onClick={() => excluirPet(pet.id)}>Excluir</button>
+            {/*Formulário de remédio*/}
+            <RemedioForm petId={pet.id} onAddRemedio={adicionarRemedioAoPet} />
+            {/*lista de remédio do pet*/}
+            {pet.remedios.length > 0 && (
+              <ul>
+                {pet.remedios.map((remedio) => (
+                  <li key={remedio.id}>
+                    💊{remedio.nome} - {remedio.dosagem} - {remedio.frequencia}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
