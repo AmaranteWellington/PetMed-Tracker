@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PetForm from './PetForm';
 
 function App() {
-  const [pets, setPets] = useState([]);
-  //Carregar pets no LocalStorage na inicialização
-  useEffect(() => {
+  const [pets, setPets] = useState(() => {
     const dadosSalvos = localStorage.getItem('pets');
-    if (dadosSalvos) {
-      setPets(JSON.parse(dadosSalvos));
-    }
-  }, []);
-  //Salvar pets no LocalStorage sempre que mudar
-  useEffect(() => {
-    localStorage.setItem('pets', JSON.stringify(pets));
-  }, [pets]);
+    return dadosSalvos ? JSON.parse(dadosSalvos) : [];
+  });
+
   const adicionarPet = (novoPet) => {
     const novaLista = [...pets, novoPet];
     setPets(novaLista);
@@ -22,6 +15,7 @@ function App() {
   const excluirPet = (id) => {
     const novaLista = pets.filter((pet) => pet.id !== id);
     setPets(novaLista);
+    localStorage.setItem('pets', JSON.stringify(novaLista));
   };
   return (
     <div>
