@@ -33,6 +33,35 @@ function App() {
     setPets(novaLista);
     localStorage.setItem('pets', JSON.stringify(novaLista));
   };
+
+  const registrarDose = (petId, remedioId) => {
+    const novaLista = pets.map((pet) => {
+      if (pet.id === petId) {
+        const novosRemedios = pet.remedios.map((remedio) => {
+          if (remedio.id === remedioId) {
+            const novaDose = {
+              dataHora: new Date().toISOString(),
+            };
+            return {
+              ...remedio,
+              doses: [...remedio.doses, novaDose],
+            };
+          }
+          return remedio;
+        });
+
+        return {
+          ...pet,
+          remedios: novosRemedios,
+        };
+      }
+      return pet;
+    });
+
+    setPets(novaLista);
+    localStorage.setItem('pets', JSON.stringify(novaLista));
+  };
+
   return (
     <div>
       <h1>PetMed Tracker</h1>
@@ -50,7 +79,19 @@ function App() {
               <ul>
                 {pet.remedios.map((remedio) => (
                   <li key={remedio.id}>
-                    💊{remedio.nome} - {remedio.dosagem} - {remedio.frequencia}
+                    💊<strong>{remedio.nome}</strong> - {remedio.dosagem} -{' '}
+                    {remedio.frequencia}
+                    <br />
+                    <button onClick={() => registrarDose(pet.id, remedio.id)}>
+                      Registrar Dose
+                    </button>
+                    {/* Histórico de doses */}
+                    {remedio.doses.map((dose, index) => (
+                      <li key={index}>
+                        ✅ Dose registrada em:{' '}
+                        {new Date(dose.dataHora).toLocaleString()}
+                      </li>
+                    ))}
                   </li>
                 ))}
               </ul>
