@@ -110,14 +110,26 @@ function App() {
                     </div>
 
                     {/* Histórico de doses */}
-                    <ul className="mt-2 list-decimal list-inside space-y-1">
-                      {remedio.doses.map((dose, index) => (
-                        <li key={index} className="text-sm">
-                          ✅ <strong>Dose {index + 1}</strong> - registrada em:{' '}
-                          {new Date(dose.dataHora).toLocaleString()}
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <h4 className="text-sm font-semibold m1">
+                        📅 Histórico de Doses:{' '}
+                      </h4>
+                      <ul className="space-y-1">
+                        {remedio.doses.map((dose, index) => (
+                          <li
+                            key={index}
+                            className={`text-xs px-2 py-1 rounded ${
+                              index === remedio.doses.length - 1
+                                ? 'bg-green-500 text-white font-bold'
+                                : 'bg-white/50 text-black'
+                            }`}
+                          >
+                            💉 Dose {index + 1}-
+                            {new Date(dose.dataHora).toLocaleString()}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </li>
                 ))}
               </ul>
