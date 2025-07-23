@@ -61,6 +61,11 @@ function App() {
     setPets(novaLista);
     localStorage.setItem('pets', JSON.stringify(novaLista));
   };
+  const removerDose = (petIndex, remedioIndex, doseIndex) => {
+    const novosPets = [...pets];
+    novosPets[petIndex].remedios[remedioIndex].doses.splice(doseIndex, 1);
+    setPets(novosPets);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-6 text-white font-sans">
@@ -72,7 +77,7 @@ function App() {
         Animais Cadastrados:
       </h2>
       <ul className="space-y-6">
-        {pets.map((pet) => (
+        {pets.map((pet, petIndex) => (
           <li
             key={pet.id}
             className="bg-white bg-opacity-20 rounded-lg p-4 shadow-lg"
@@ -94,7 +99,7 @@ function App() {
             {/*lista de remédio do pet*/}
             {pet.remedios.length > 0 && (
               <ul className="mt-4 space-y-3">
-                {pet.remedios.map((remedio) => (
+                {pet.remedios.map((remedio, remedioIndex) => (
                   <li
                     key={remedio.id}
                     className="bg-white bg-opacity-30 rounded p-3 shadow-inner"
@@ -115,17 +120,27 @@ function App() {
                         📅 Histórico de Doses:{' '}
                       </h4>
                       <ul className="space-y-1">
-                        {remedio.doses.map((dose, index) => (
+                        {remedio.doses.map((dose, doseIndex) => (
                           <li
-                            key={index}
-                            className={`text-xs px-2 py-1 rounded ${
-                              index === remedio.doses.length - 1
+                            key={doseIndex}
+                            className={`text-xs px-2 py-1 rounded flex justify-between items-center ${
+                              doseIndex === remedio.doses.length - 1
                                 ? 'bg-green-500 text-white font-bold'
                                 : 'bg-white/50 text-black'
                             }`}
                           >
-                            💉 Dose {index + 1}-
-                            {new Date(dose.dataHora).toLocaleString()}
+                            <span>
+                              💉 Dose {doseIndex + 1}-
+                              {new Date(dose.dataHora).toLocaleString()}
+                            </span>
+                            <button
+                              onClick={() =>
+                                removerDose(petIndex, remedioIndex, doseIndex)
+                              }
+                              className="ml-2 text-red-600 hover:underline text-[10px]"
+                            >
+                              Remover
+                            </button>
                           </li>
                         ))}
                       </ul>
