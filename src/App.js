@@ -63,35 +63,61 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>PetMed Tracker</h1>
+    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-6 text-white font-sans">
+      <h1 className="text-4xl font-bold mb-6 text-center drop-shadow-lg">
+        PetMed Tracker
+      </h1>
       <PetForm onAddPet={adicionarPet} />
-      <h2>Animais Cadastrados:</h2>
-      <ul>
+      <h2 className="text-2xl font-semibold mt-8 mb-4 border-b border-white/50 pb-2">
+        Animais Cadastrados:
+      </h2>
+      <ul className="space-y-6">
         {pets.map((pet) => (
-          <li key={pet.id}>
-            <strong>{pet.nome}</strong> ({pet.especie}){''}
-            <button onClick={() => excluirPet(pet.id)}>Excluir</button>
+          <li
+            key={pet.id}
+            className="bg-white bg-opacity-20 rounded-lg p-4 shadow-lg"
+          >
+            <div className="flex justify-between items-center">
+              <strong className="text-xl">{pet.nome}</strong> ({pet.especie})
+              {''}
+              <button
+                onClick={() => excluirPet(pet.id)}
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm font-semibold transition"
+              >
+                Excluir
+              </button>
+            </div>
+            <p className="italic">{pet.especie}</p>
+
             {/*Formulário de remédio*/}
             <RemedioForm petId={pet.id} onAddRemedio={adicionarRemedioAoPet} />
             {/*lista de remédio do pet*/}
             {pet.remedios.length > 0 && (
-              <ul>
+              <ul className="mt-4 space-y-3">
                 {pet.remedios.map((remedio) => (
-                  <li key={remedio.id}>
-                    💊<strong>{remedio.nome}</strong> - {remedio.dosagem} -{' '}
-                    {remedio.frequencia}
-                    <br />
-                    <button onClick={() => registrarDose(pet.id, remedio.id)}>
-                      Registrar Dose
-                    </button>
+                  <li
+                    key={remedio.id}
+                    className="bg-white bg-opacity-30 rounded p-3 shadow-inner"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        💊<strong>{remedio.nome}</strong> - {remedio.dosagem} -{' '}
+                        {remedio.frequencia}
+                      </div>
+                      <button onClick={() => registrarDose(pet.id, remedio.id)}>
+                        Registrar Dose
+                      </button>
+                    </div>
+
                     {/* Histórico de doses */}
-                    {remedio.doses.map((dose, index) => (
-                      <li key={index}>
-                        ✅ <strong>Dose {index + 1}</strong> - registrada em:{' '}
-                        {new Date(dose.dataHora).toLocaleString()}
-                      </li>
-                    ))}
+                    <ul className="mt-2 list-decimal list-inside space-y-1">
+                      {remedio.doses.map((dose, index) => (
+                        <li key={index} className="text-sm">
+                          ✅ <strong>Dose {index + 1}</strong> - registrada em:{' '}
+                          {new Date(dose.dataHora).toLocaleString()}
+                        </li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
               </ul>
