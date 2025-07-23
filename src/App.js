@@ -88,7 +88,7 @@ function App() {
                     {/* Histórico de doses */}
                     {remedio.doses.map((dose, index) => (
                       <li key={index}>
-                        ✅ Dose registrada em:{' '}
+                        ✅ <strong>Dose {index + 1}</strong> - registrada em:{' '}
                         {new Date(dose.dataHora).toLocaleString()}
                       </li>
                     ))}
