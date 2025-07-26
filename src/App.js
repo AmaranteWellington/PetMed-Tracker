@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PetForm from './PetForm';
 import RemedioForm from './RemedioForm';
+import PetList from './PetList';
 
 function App() {
   const [pets, setPets] = useState(() => {
@@ -76,82 +77,13 @@ function App() {
       <h2 className="text-2xl font-semibold mt-8 mb-4 border-b border-white/50 pb-2">
         Animais Cadastrados:
       </h2>
-      <ul className="space-y-6">
-        {pets.map((pet, petIndex) => (
-          <li
-            key={pet.id}
-            className="bg-white bg-opacity-20 rounded-lg p-4 shadow-lg"
-          >
-            <div className="flex justify-between items-center">
-              <strong className="text-xl">{pet.nome}</strong> ({pet.especie})
-              {''}
-              <button
-                onClick={() => excluirPet(pet.id)}
-                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm font-semibold transition"
-              >
-                Excluir
-              </button>
-            </div>
-            <p className="italic">{pet.especie}</p>
-
-            {/*Formulário de remédio*/}
-            <RemedioForm petId={pet.id} onAddRemedio={adicionarRemedioAoPet} />
-            {/*lista de remédio do pet*/}
-            {pet.remedios.length > 0 && (
-              <ul className="mt-4 space-y-3">
-                {pet.remedios.map((remedio, remedioIndex) => (
-                  <li
-                    key={remedio.id}
-                    className="bg-white bg-opacity-30 rounded p-3 shadow-inner"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        💊<strong>{remedio.nome}</strong> - {remedio.dosagem} -{' '}
-                        {remedio.frequencia}
-                      </div>
-                      <button onClick={() => registrarDose(pet.id, remedio.id)}>
-                        Registrar Dose
-                      </button>
-                    </div>
-
-                    {/* Histórico de doses */}
-                    <div>
-                      <h4 className="text-sm font-semibold m1">
-                        📅 Histórico de Doses:{' '}
-                      </h4>
-                      <ul className="space-y-1">
-                        {remedio.doses.map((dose, doseIndex) => (
-                          <li
-                            key={doseIndex}
-                            className={`text-xs px-2 py-1 rounded flex justify-between items-center ${
-                              doseIndex === remedio.doses.length - 1
-                                ? 'bg-green-500 text-white font-bold'
-                                : 'bg-white/50 text-black'
-                            }`}
-                          >
-                            <span>
-                              💉 Dose {doseIndex + 1}-
-                              {new Date(dose.dataHora).toLocaleString()}
-                            </span>
-                            <button
-                              onClick={() =>
-                                removerDose(petIndex, remedioIndex, doseIndex)
-                              }
-                              className="ml-2 text-red-600 hover:underline text-[10px]"
-                            >
-                              Remover
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
+      <PetList
+        pets={pets}
+        excluirPet={excluirPet}
+        adicionarRemedioAoPet={adicionarRemedioAoPet}
+        registrarDose={registrarDose}
+        removerDose={removerDose}
+      />
     </div>
   );
 }
