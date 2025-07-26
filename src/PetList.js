@@ -40,7 +40,10 @@ function PetList({
                       💊 <strong>{remedio.nome}</strong> - {remedio.dosagem} -{' '}
                       {remedio.frequencia}
                     </div>
-                    <button onClick={() => registrarDose(pet.id, remedio.id)}>
+                    <button
+                      onClick={() => registrarDose(pet.id, remedio.id)}
+                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-semibold transition"
+                    >
                       Registrar Dose
                     </button>
                   </div>
