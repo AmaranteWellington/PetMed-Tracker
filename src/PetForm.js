@@ -21,14 +21,18 @@ function PetForm({ onAddPet }) {
     setEspecie('');
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Cadastrar Animal</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white/20 backdrop-blur-md p-6 rounded-xl shadow-md mb-6 space-y-4"
+    >
+      <h2 className="text-xl font-semibold text-white"> 🐾Cadastrar Animal</h2>
       <input
         type="text"
         placeholder="Nome do Animal"
         value={nome}
         onChange={(e) => setNome(e.target.value)}
         required
+        className="w-full p-2 rounded bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
       <input
         type="text"
@@ -36,8 +40,14 @@ function PetForm({ onAddPet }) {
         value={especie}
         onChange={(e) => setEspecie(e.target.value)}
         required
+        className="w-full p-2 rounded bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
-      <button type="submit">Cadastrar</button>
+      <button
+        type="submit"
+        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+      >
+        Cadastrar
+      </button>
     </form>
   );
 }
