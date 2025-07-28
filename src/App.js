@@ -66,6 +66,7 @@ function App() {
     const novosPets = [...pets];
     novosPets[petIndex].remedios[remedioIndex].doses.splice(doseIndex, 1);
     setPets(novosPets);
+    localStorage.setItem('pets', JSON.stringify(novosPets));
   };
 
   return (
